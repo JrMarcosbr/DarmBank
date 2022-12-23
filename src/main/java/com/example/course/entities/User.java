@@ -26,10 +26,10 @@ public class User implements Serializable{
 	private String name;
 	private String email;
 	private String cpf;
-	private String telefone;
-	private int tipo_conta;
-	private String senha;
-	private String endereco;
+	private String contact;
+	private int accountType;
+	private String password;
+	private String address;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "client")
@@ -42,25 +42,25 @@ public class User implements Serializable{
 	public User() {
 	}
 
-	public User(Long id, String name, String email, String cpf, String telefone, int tipo_conta, String senha, String endereco) {
+	public User(Long id, String name, String email, String cpf, String contact, int accountType, String password, String address) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.cpf = cpf;
-		this.telefone = telefone;
-		this.tipo_conta = tipo_conta;
-		this.senha = senha;
-		this.endereco = endereco;
+		this.contact = contact;
+		this.accountType = accountType;
+		this.password = password;
+		this.address = address;
 	}
 
 	
 
-	public String getEndereco() {
-		return endereco;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getCpf() {
@@ -71,28 +71,28 @@ public class User implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public String getTelefone() {
-		return telefone;
+	public String getContact() {
+		return contact;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
-	public int getTipo_conta() {
-		return tipo_conta;
+	public int getAccountType() {
+		return accountType;
 	}
 
-	public void setTipo_conta(int tipo_conta) {
-		this.tipo_conta = tipo_conta;
+	public void setAccountType(int accountType) {
+		this.accountType = accountType;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Long getId() {
@@ -121,7 +121,7 @@ public class User implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(carts, cpf, email, id, senha, tipo_conta);
+		return Objects.hash(carts, cpf, email, id, password, accountType);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class User implements Serializable{
 		User other = (User) obj;
 		return Objects.equals(carts, other.carts) && Objects.equals(cpf, other.cpf)
 				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(senha, other.senha) && tipo_conta == other.tipo_conta;
+				&& Objects.equals(password, other.password) && accountType == other.accountType;
 	}
 	
 	

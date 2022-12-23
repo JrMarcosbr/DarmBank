@@ -22,20 +22,20 @@ public class Admin implements Serializable {
 	
 	private String name;
 	private String cpf;
-	private String senha;
-	private String endereco;
+	private String password;
+	private String address;
 
 	
 	public Admin() {
 	}
 	
-	public Admin(Long id, String name, String cpf, String senha, String endereco) {
+	public Admin(Long id, String name, String cpf, String password, String address) {
 	super();
 	this.id = id;
 	this.name = name;
 	this.cpf = cpf;
-	this.senha = senha;
-	this.endereco = endereco;
+	this.password = password;
+	this.address = address;
 }
 
 
@@ -62,19 +62,19 @@ public class Admin implements Serializable {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-	public String getSenha() {
-		return senha;
+	public String getpassword() {
+		return password;
 	}
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getEndereco() {
-		return endereco;
+	public void setpassword(String password) {
+		this.password = password;
 	}
 
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
+	public String getaddress() {
+		return address;
+	}
+
+	public void setaddress(String address) {
+		this.address = address;
 	}
 
 	@Override

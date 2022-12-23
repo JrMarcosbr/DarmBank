@@ -56,7 +56,7 @@ public class CardService {
 	}
 
 	private void updateData(Card entity, Card obj) {
-		entity.setBandeira(0);
+		entity.setCardName(null);
 
 	}
 }

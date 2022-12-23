@@ -34,23 +34,23 @@ public class AdminService {
 		return repository.save(obj);
 	}
 	
-	public boolean login(String cpf, String senha, Long id) {
+	public boolean login(String cpf, String password, Long id) {
 		String AdminCpf = findById(id).getCpf();
-		String AdminSenha = findById(id).getSenha();
-		if (AdminCpf == cpf && AdminSenha == senha) {
+		String Adminpassword = findById(id).getpassword();
+		if (AdminCpf == cpf && Adminpassword == password) {
 			return true;
 		}
 		throw new IllegalArgumentException("Password or Cpf incorrect");
 	}
 	
-	public boolean recuperarSenha(String cpf, String nome, String email, Long id) {
+	public boolean recuperarpassword(String cpf, String nome, String email, Long id) {
 		String AdminCpf = findById(id).getCpf();
 		String AdminName= findById(id).getName();
 		throw new IllegalArgumentException("Name, Email or Cpf incorrect");
 	}
 	
-	public boolean confirmarSenha(String senha, String confirmacao_senha) {
-		if(senha == confirmacao_senha) {
+	public boolean confirmarpassword(String password, String confirmacao_password) {
+		if(password == confirmacao_password) {
 			return true;
 		}
 		throw new IllegalArgumentException("Password distinct");
@@ -80,7 +80,7 @@ public class AdminService {
 	private void updateData(Admin entity, Admin obj) {
 		entity.setName(obj.getName());
 		entity.setCpf(obj.getCpf());
-		entity.setSenha(obj.getSenha());
+		entity.setpassword(obj.getpassword());
 		
 	}
 }

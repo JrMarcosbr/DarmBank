@@ -21,13 +21,13 @@ public class Card implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private int tipo_cartao;
-	private String nome_cartao;
-	private int bandeira;
-	private String num_cartao;
+	private int cardType;
+	private String cardName;
+	private int flag;
+	private String cardNumber;
 	private String cvc;
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-yy", timezone = "GMT")
-	private String validade;
+	private String shelfLife;
 
 	@ManyToOne
 	@JoinColumn(name = "client_id")
@@ -44,15 +44,15 @@ public class Card implements Serializable {
 	public Card() {
 	}
 
-	public Card(Long id, int tipo_cartao, String nome_cartao, int bandeira, String num_cartao, String cvc,
-			 String validade, CardStatus cartStatus, User client) {
+	public Card(Long id, int cardType, String cardName, int flag, String cardNumber, String cvc,
+			 String shelfLife, CardStatus cartStatus, User client) {
 		this.id = id;
-		this.tipo_cartao = tipo_cartao;
-		this.nome_cartao = nome_cartao;
-		this.bandeira = bandeira;
-		this.num_cartao = num_cartao;
+		this.cardType = cardType;
+		this.cardName = cardName;
+		this.flag = flag;
+		this.cardNumber = cardNumber;
 		this.cvc = cvc;
-		this.validade = validade;
+		this.shelfLife = shelfLife;
 		setCartStatus(cartStatus);
 		this.client = client;
 	}	
@@ -65,36 +65,36 @@ public class Card implements Serializable {
 		this.id = id;
 	}
 
-	public int getTipo_cartao() {
-		return tipo_cartao;
+	public int getCardType() {
+		return cardType;
 	}
 
-	public void setTipo_cartao(int tipo_cartao) {
-		this.tipo_cartao = tipo_cartao;
+	public void setCardType(int cardType) {
+		this.cardType = cardType;
 	}
 
-	public String getNome_cartao() {
-		return nome_cartao;
+	public String getCardName() {
+		return cardName;
 	}
 
-	public void setNome_cartao(String nome_cartao) {
-		this.nome_cartao = nome_cartao;
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
 	}
 
-	public int getBandeira() {
-		return bandeira;
+	public int getFlag() {
+		return flag;
 	}
 
-	public void setBandeira(int bandeira) {
-		this.bandeira = bandeira;
+	public void setFlag(int flag) {
+		this.flag = flag;
 	}
 
-	public String getNum_cartao() {
-		return num_cartao;
+	public String getCardNumber() {
+		return cardNumber;
 	}
 
-	public void setNum_cartao(String num_cartao) {
-		this.num_cartao = num_cartao;
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
 	}
 
 	public String getCvc() {
@@ -105,12 +105,12 @@ public class Card implements Serializable {
 		this.cvc = cvc;
 	}
 
-	public String getValidade() {
-		return validade;
+	public String getShelfLife() {
+		return shelfLife;
 	}
 
-	public void setValidade(String validade) {
-		this.validade = validade;
+	public void setshelfLife(String shelfLife) {
+		this.shelfLife = shelfLife;
 	}
 
 	public CardStatus getCartStatus() {
