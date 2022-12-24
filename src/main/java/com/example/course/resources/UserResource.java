@@ -38,11 +38,27 @@ public class UserResource {
 	}
 	
 	@GetMapping(value = "/cpf/{cpf}")
-	public ResponseEntity<User> findByCpf(@PathVariable Long cpf){
-		User obj = service.findById(cpf);
+	public ResponseEntity<User> findByCpf(@PathVariable String cpf){
+		User obj = service.findByCpf(cpf);
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@RequestMapping(value = "/login/{cpf},{password}")
+	@GetMapping
+	public ResponseEntity<Long> login(@PathVariable String cpf, String password){
+		User obj = service.login(cpf, password);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf}")
+				.buildAndExpand(obj.getCpf()).toUri();
+		return ResponseEntity.created(uri).body(obj.getId());
+	}
+	
+	@RequestMapping(value = "/login/confirmPassword/{password},{confirm_password}")
+	@GetMapping
+	public ResponseEntity<Boolean> confirmPassword(String password, String confim_password){
+		boolean obj = service.confirmPassword(password, confim_password);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(obj).toUri();
+		return ResponseEntity.created(uri).body(obj);
+	}
 	
 	@RequestMapping(value = "/createUser")
 	@PostMapping

@@ -1,5 +1,6 @@
 package com.example.course.services;
 
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.example.course.entities.Card;
 import com.example.course.entities.User;
 import com.example.course.repositories.UserRepository;
 import com.example.course.services.exceptions.CPFException;
@@ -33,17 +33,19 @@ public class UserService {
 		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
 	}
 	
+	public User findByCpf(String cpf) {
+		Optional<User> obj = repository.findByCpf(cpf);
+		return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
+	}
+	
+	
+	
 	public User insert(User obj) {
 		try {
-			if(ValidateCPF(obj.getCpf())) {
-				return repository.save(obj);
-			}else {
-				CPFException es = null;
-				throw new CPFException(es.getMessage());
-			}
-			
+			ValidateCPF(obj.getCpf());
+			return repository.save(obj);
 		} catch (CPFException e) {
-			throw new CPFException("Invalid CPF!");
+			throw new CPFException("Invalid CPF");
 		}
 	}
 	
@@ -55,7 +57,7 @@ public class UserService {
             CPF.equals("66666666666") || CPF.equals("77777777777") ||
             CPF.equals("88888888888") || CPF.equals("99999999999") ||
             (CPF.length() != 11))
-        	return false;
+        	throw new IllegalArgumentException("Invalid CPF");
 
         char dig10, dig11;
         int sm, i, r, num, peso;
@@ -94,37 +96,44 @@ public class UserService {
             if ((dig10 == CPF.charAt(9)) && (dig11 == CPF.charAt(10))) {
                  return(true);
             }else {
-            	return false;
+            	throw new IllegalArgumentException("Invalid CPF");
             }
         } catch (InputMismatchException erro) {
-        	return false;
+            throw new IllegalArgumentException("Invalid CPF");
     }
 }
 	
-	public boolean login(String cpf, String senha, Long id) {
-		String userCpf = findById(id).getCpf();
-		String userSenha = findById(id).getPassword();
-		if (userCpf == cpf && userSenha == senha) {
-			return true;
+	public User login(String cpf, String password) {
+		try {
+			findByCpf(cpf);
+			String userPassword = findByCpf(cpf).getPassword();
+			try {
+				userPassword.equals(password);
+				Optional<User> obj = repository.findByCpf(cpf);
+				return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
+			} catch (CPFException e) {
+				throw new CPFException("Invalid CPF");
+			}
+		} catch (CPFException e) {
+			throw new CPFException("Invalid CPF");
 		}
-		throw new IllegalArgumentException("Incorrect password or CPF");
 	}
 	
-	public boolean recuperarSenha(String cpf, String nome, String email, Long id) {
+	public boolean recoverPassword(String cpf, String name, String email, Long id) {
 		String userCpf = findById(id).getCpf();
 		String userName= findById(id).getName();
 		String userEmail= findById(id).getEmail();
-		if (userCpf == cpf && userName == nome && userEmail == email) {
+		if (userCpf == cpf && userName == name && userEmail == email) {
 			return true;
 		}
 		throw new IllegalArgumentException("Incorrect name, email or CPF");
 	}
 	
-	public boolean confirmarSenha(String senha, String confirmacao_senha) {
-		if(senha == confirmacao_senha) {
+	public boolean confirmPassword(String password, String confirm_password) {
+		if(password == confirm_password) {
 			return true;
 		}
-		throw new IllegalArgumentException("Distinct Password");
+		return false;
 	}
 	
 	public void delete(Long id) {
