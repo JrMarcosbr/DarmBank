@@ -121,7 +121,7 @@ public class User implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(carts, cpf, email, id, password, accountType);
+		return Objects.hash(accountType, address, carts, contact, cpf, email, id, name, password);
 	}
 
 	@Override
@@ -133,12 +133,12 @@ public class User implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(carts, other.carts) && Objects.equals(cpf, other.cpf)
-				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(password, other.password) && accountType == other.accountType;
+		return accountType == other.accountType && Objects.equals(address, other.address)
+				&& Objects.equals(carts, other.carts) && Objects.equals(contact, other.contact)
+				&& Objects.equals(cpf, other.cpf) && Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Objects.equals(password, other.password);
 	}
 	
 	
-	
-	
+
 }

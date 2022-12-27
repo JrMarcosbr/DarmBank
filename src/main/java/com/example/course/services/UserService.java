@@ -119,15 +119,31 @@ public class UserService {
 		}
 	}
 	
-	public boolean recoverPassword(String cpf, String name, String email, Long id) {
-		String userCpf = findById(id).getCpf();
-		String userName= findById(id).getName();
-		String userEmail= findById(id).getEmail();
-		if (userCpf == cpf && userName == name && userEmail == email) {
-			return true;
+	public User recoverPassword(String cpf, String name, String email) {
+		try {
+			User entity = findByCpf(cpf);
+			try {
+				String userName = entity.getName();
+				userName.equals(name);
+				try{
+					String userEmail= entity.getEmail();
+					userEmail.equals(email);
+					try {
+						return entity; 
+					} catch (CPFException e) {
+						throw new CPFException("ERRO");
+					}
+				} catch (CPFException e) {
+					throw new CPFException(email);
+				}
+			} catch (CPFException e) {
+				throw new CPFException(name);
+			}
+		}catch (CPFException e) {
+			throw new CPFException(cpf);
 		}
-		throw new IllegalArgumentException("Incorrect name, email or CPF");
-	}
+
+}
 	
 	public boolean confirmPassword(String password, String confirm_password) {
 		if(password == confirm_password) {
