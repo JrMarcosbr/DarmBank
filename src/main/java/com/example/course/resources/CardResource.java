@@ -39,6 +39,7 @@ public class CardResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	
 	@PostMapping
 	public ResponseEntity<Card> insert(@RequestBody Card obj){
 		obj = service.insert(obj);

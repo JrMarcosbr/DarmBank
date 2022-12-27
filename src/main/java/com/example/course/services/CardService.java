@@ -27,7 +27,7 @@ public class CardService {
 	public List<Card> findAll() {
 		return repository.findAll();
 	}
-	
+		
 	public Card findById(Long id) {
 		Optional<Card> obj = repository.findById(id);
 		return obj.orElseThrow();
