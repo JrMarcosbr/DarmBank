@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.course.entities.Card;
+import com.example.course.entities.enums.CardStatus;
 import com.example.course.repositories.CardRepository;
 import com.example.course.services.exceptions.DatabaseException;
 import com.example.course.services.exceptions.ResourceNotFoundException;
@@ -56,7 +57,7 @@ public class CardService {
 	}
 
 	private void updateData(Card entity, Card obj) {
-		entity.setCardName(null);
-
+		entity.setCartStatus(obj.getCartStatus());
+		entity.setJustify(obj.getJustify());
 	}
 }

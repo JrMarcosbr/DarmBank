@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.course.entities.Card;
+import com.example.course.entities.User;
+import com.example.course.entities.enums.CardStatus;
 import com.example.course.services.CardService;
 
 @RestController
@@ -42,6 +45,12 @@ public class CardResource {
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
+	}
+	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Card> update(@PathVariable Long id, @RequestBody Card obj) {
+		Card entity = service.update(id, obj);
+		return ResponseEntity.ok().body(entity);
 	}
 	
 	@DeleteMapping(value = "/{id}")

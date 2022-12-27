@@ -40,12 +40,13 @@ public class Card implements Serializable {
 //	private Payment payment;
 	
 	private Integer cartStatus;
+	private String justify;
 	
 	public Card() {
 	}
 
 	public Card(Long id, int cardType, String cardName, int flag, String cardNumber, String cvc,
-			 String shelfLife, CardStatus cartStatus, User client) {
+			 String shelfLife, CardStatus cartStatus,String justify, User client) {
 		this.id = id;
 		this.cardType = cardType;
 		this.cardName = cardName;
@@ -54,9 +55,19 @@ public class Card implements Serializable {
 		this.cvc = cvc;
 		this.shelfLife = shelfLife;
 		setCartStatus(cartStatus);
+		this.justify = justify;
 		this.client = client;
 	}	
 	
+	
+	public String getJustify() {
+		return justify;
+	}
+
+	public void setJustify(String justify) {
+		this.justify = justify;
+	}
+
 	public Long getId() {
 		return id;
 	}
