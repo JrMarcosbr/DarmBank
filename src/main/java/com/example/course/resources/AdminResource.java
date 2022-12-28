@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.course.entities.Admin;
+import com.example.course.entities.User;
 import com.example.course.services.AdminService;
 
 @RestController
-@RequestMapping(value = "/admins")
+@RequestMapping(value = "/admin")
 public class AdminResource {
 
 	@Autowired 
@@ -48,6 +49,15 @@ public class AdminResource {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
+	}
+	
+	@RequestMapping(value = "/recoverPassword/{cpf},{name},{email}")
+	@GetMapping
+	public ResponseEntity<Admin> recoverPassword(@PathVariable String cpf, @PathVariable String name, @PathVariable String email){
+		Admin obj = service.recoverPassword(cpf, name, email);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf},{name},{email}")
+				.buildAndExpand(obj.getCpf(),obj.getName(), obj.getEmail()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	

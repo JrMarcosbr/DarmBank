@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.course.entities.Admin;
+import com.example.course.entities.User;
 import com.example.course.repositories.AdminRepository;
 import com.example.course.services.exceptions.DatabaseException;
 import com.example.course.services.exceptions.ResourceNotFoundException;
@@ -30,6 +31,11 @@ public class AdminService {
 		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
 	}
 	
+	public Admin findByCpf(String cpf) {
+		Optional<Admin> obj = repository.findByCpf(cpf);
+		return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
+	}
+	
 	public Admin insert(Admin obj) {
 		return repository.save(obj);
 	}
@@ -43,11 +49,19 @@ public class AdminService {
 		throw new IllegalArgumentException("Password or Cpf incorrect");
 	}
 	
-	public boolean recuperarpassword(String cpf, String nome, String email, Long id) {
-		String AdminCpf = findById(id).getCpf();
-		String AdminName= findById(id).getName();
-		throw new IllegalArgumentException("Name, Email or Cpf incorrect");
-	}
+	public Admin recoverPassword(String cpf, String name, String email) {
+		if (repository.findByCpf(cpf) != null) {
+			String userName = findByCpf(cpf).getName();
+			String userEmail= findByCpf(cpf).getEmail();
+			if(userEmail.equals(email) && userName.equals(name)) {
+				return findByCpf(cpf);
+			}else {
+				throw new ResourceNotFoundException(cpf);
+			}
+		}else {
+			throw new ResourceNotFoundException(cpf);
+		}
+}
 	
 	public boolean confirmarpassword(String password, String confirmacao_password) {
 		if(password == confirmacao_password) {
