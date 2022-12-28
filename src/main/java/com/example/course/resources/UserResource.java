@@ -48,28 +48,28 @@ public class UserResource {
 	
 	@RequestMapping(value = "/login/{cpf},{password}")
 	@GetMapping
-	public ResponseEntity<Long> login(@PathVariable String cpf, String password){
+	public ResponseEntity<Long> login(@PathVariable String cpf, @PathVariable String password){
 		User obj = service.login(cpf, password);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf}")
-				.buildAndExpand(obj.getCpf()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf},{password}")
+				.buildAndExpand(obj.getCpf(), obj.getPassword()).toUri();
 		return ResponseEntity.created(uri).body(obj.getId());
 	}
 	
 	@RequestMapping(value = "/recoverPassword/{cpf},{name},{email}")
 	@GetMapping
-	public ResponseEntity<User> recoverPassword(@PathVariable String cpf, String name, String email){
+	public ResponseEntity<User> recoverPassword(@PathVariable String cpf, @PathVariable String name, @PathVariable String email){
 		User obj = service.recoverPassword(cpf, name, email);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf}")
-				.buildAndExpand(obj.getCpf()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{cpf},{name},{email}")
+				.buildAndExpand(obj.getCpf(),obj.getName(), obj.getEmail()).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	
 	
 	@RequestMapping(value = "/login/confirmPassword/{password},{confirm_password}")
 	@GetMapping
-	public ResponseEntity<Boolean> confirmPassword(String password, String confim_password){
-		boolean obj = service.confirmPassword(password, confim_password);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand(obj).toUri();
+	public ResponseEntity<Boolean> confirmPassword(@PathVariable String password, @PathVariable  String confirm_password){
+		boolean obj = service.confirmPassword(password, confirm_password);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{password},{confirm_password}").buildAndExpand(obj).toUri();
 		return ResponseEntity.created(uri).body(obj);
 	}
 	

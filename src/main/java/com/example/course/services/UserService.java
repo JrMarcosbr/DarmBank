@@ -1,6 +1,6 @@
 package com.example.course.services;
 
-import java.sql.SQLException;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +45,7 @@ public class UserService {
 			ValidateCPF(obj.getCpf());
 			return repository.save(obj);
 		} catch (CPFException e) {
-			throw new CPFException("Invalid CPF");
+			throw new CPFException(obj.getCpf());
 		}
 	}
 	
@@ -104,49 +104,34 @@ public class UserService {
 }
 	
 	public User login(String cpf, String password) {
-		try {
-			findByCpf(cpf);
-			String userPassword = findByCpf(cpf).getPassword();
-			try {
-				userPassword.equals(password);
-				Optional<User> obj = repository.findByCpf(cpf);
-				return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
-			} catch (CPFException e) {
-				throw new CPFException("Invalid CPF");
+			if(findByCpf(cpf) != null) {
+				String userPassword = findByCpf(cpf).getPassword();
+				if(userPassword.equals(password)) {
+					Optional<User> obj = repository.findByCpf(cpf);
+					return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
+				}else {
+					throw new ResourceNotFoundException(userPassword);
+				}
+			}else {
+				throw new ResourceNotFoundException("INVALID PASSWORD");			}
 			}
-		} catch (CPFException e) {
-			throw new CPFException("Invalid CPF");
-		}
-	}
 	
 	public User recoverPassword(String cpf, String name, String email) {
-		try {
-			User entity = findByCpf(cpf);
-			try {
-				String userName = entity.getName();
-				userName.equals(name);
-				try{
-					String userEmail= entity.getEmail();
-					userEmail.equals(email);
-					try {
-						return entity; 
-					} catch (CPFException e) {
-						throw new CPFException("ERRO");
-					}
-				} catch (CPFException e) {
-					throw new CPFException(email);
-				}
-			} catch (CPFException e) {
-				throw new CPFException(name);
+		if (repository.findByCpf(cpf) != null) {
+			String userName = findByCpf(cpf).getName();
+			String userEmail= findByCpf(cpf).getEmail();
+			if(userEmail.equals(email) && userName.equals(name)) {
+				return findByCpf(cpf);
+			}else {
+				throw new ResourceNotFoundException(cpf);
 			}
-		}catch (CPFException e) {
-			throw new CPFException(cpf);
+		}else {
+			throw new ResourceNotFoundException(cpf);
 		}
-
 }
 	
 	public boolean confirmPassword(String password, String confirm_password) {
-		if(password == confirm_password) {
+		if(password.equals(confirm_password)) {
 			return true;
 		}
 		return false;

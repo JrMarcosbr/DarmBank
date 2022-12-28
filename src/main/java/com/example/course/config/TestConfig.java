@@ -38,7 +38,7 @@ public class TestConfig implements CommandLineRunner {
 		Card c1 = new Card(null, 1,"Marcola", 2, "515151615", "132", "22/2025", CardStatus.APROVADO, null, u2);
 		Card c2 = new Card(null, 1,"Marvdvdvsdla", 2, "514151325151615", "233", "22/2025", CardStatus.RECUSADO,null, u1);
 		
-		Admin adm1 = new Admin(null, "Marcos", "2342", "709821141", "MacMAc");
+		Admin adm1 = new Admin(null, "Marcos", "2342", "709821141", "MacMAc","ceara", "admin@gmail.com");
 		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		
