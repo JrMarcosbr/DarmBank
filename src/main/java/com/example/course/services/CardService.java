@@ -40,7 +40,7 @@ public class CardService {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
@@ -52,7 +52,7 @@ public class CardService {
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		}	
 	}
 

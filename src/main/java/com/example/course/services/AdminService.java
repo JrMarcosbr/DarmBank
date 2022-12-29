@@ -28,7 +28,7 @@ public class AdminService {
 	
 	public Admin findById(Long id) {
 		Optional<Admin> obj = repository.findById(id);
-		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
+		return obj.orElseThrow(()-> new ResourceNotFoundException("ResourceNotFound"));
 	}
 	
 	public Admin findByCpf(String cpf) {
@@ -74,7 +74,7 @@ public class AdminService {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
@@ -87,7 +87,7 @@ public class AdminService {
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		}	
 	}
 

@@ -1,4 +1,3 @@
-
 package com.example.course;
 
 import org.springframework.boot.SpringApplication;

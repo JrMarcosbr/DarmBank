@@ -5,6 +5,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
+
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.course.entities.User;
 import com.example.course.repositories.UserRepository;
-import com.example.course.services.exceptions.CPFException;
+
 import com.example.course.services.exceptions.DatabaseException;
+
+import com.example.course.services.exceptions.DuplicateCPFException;
 import com.example.course.services.exceptions.ResourceNotFoundException;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class UserService {
@@ -30,7 +35,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.orElseThrow(()-> new ResourceNotFoundException(id));
+		return obj.orElseThrow(()-> new ResourceNotFoundException("ResourceNotFound"));
 	}
 	
 	public User findByCpf(String cpf) {
@@ -43,9 +48,18 @@ public class UserService {
 	public User insert(User obj) {
 		try {
 			ValidateCPF(obj.getCpf());
-			return repository.save(obj);
-		} catch (CPFException e) {
-			throw new CPFException(obj.getCpf());
+			if (repository.findByCpf(obj.getCpf()) != null) {
+				try {
+					confirmPassword(obj.getPassword(), obj.getConfirmpassword());
+						return repository.save(obj);
+					}catch (InputMismatchException e) {
+						throw new InputMismatchException(e.getMessage());
+					}
+			}else {
+				throw new DuplicateCPFException(obj.getCpf());
+			}
+		}catch (InputMismatchException e) {
+			throw new InputMismatchException(e.getMessage());
 		}
 	}
 	
@@ -99,7 +113,7 @@ public class UserService {
             	throw new IllegalArgumentException("Invalid CPF");
             }
         } catch (InputMismatchException erro) {
-            throw new IllegalArgumentException("Invalid CPF");
+            throw new IllegalArgumentException(erro);
     }
 }
 	
@@ -110,7 +124,7 @@ public class UserService {
 					Optional<User> obj = repository.findByCpf(cpf);
 					return obj.orElseThrow(()-> new ResourceNotFoundException(cpf));
 				}else {
-					throw new ResourceNotFoundException(userPassword);
+					throw new ResourceNotFoundException("existing CPF");
 				}
 			}else {
 				throw new ResourceNotFoundException("INVALID PASSWORD");			}
@@ -126,22 +140,23 @@ public class UserService {
 				throw new ResourceNotFoundException(cpf);
 			}
 		}else {
-			throw new ResourceNotFoundException(cpf);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		}
 }
 	
 	public boolean confirmPassword(String password, String confirm_password) {
-		if(password.equals(confirm_password)) {
-			return true;
+		if (confirm_password.equals(password)) {
+			return (true);
+		}else {
+			throw new ResourceNotFoundException("Different Password");
 		}
-		return false;
 	}
 	
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
@@ -154,7 +169,7 @@ public class UserService {
 			updateData(entity, obj);
 			return repository.save(entity);
 		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
+			throw new ResourceNotFoundException("ResourceNotFound");
 		}	
 	}
 

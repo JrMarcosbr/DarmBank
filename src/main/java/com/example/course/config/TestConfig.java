@@ -32,8 +32,8 @@ public class TestConfig implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		User u1 = new User(null, "Marcis", "mariasdfa@gmail.com", "988888888", "123456", 0, "Maria Brown", "vsvsvsv");
-		User u2 = new User(null, "MariaBrown", "maria@gmail.com", "08401367301", "1236", 0, "1234", "vsvsdvsvsvsvsv");
+		User u1 = new User(null, "Marcis", "mariasdfa@gmail.com", "988888888", "123456", 0, "Maria Brown","Maria Brown", "vsvsvsv");
+		User u2 = new User(null, "MariaBrown", "maria@gmail.com", "08401367301", "1236", 0, "123","123", "vsvsdvsvsvsvsv");
 		
 		Card c1 = new Card(null, 1,"Marcola", 2, "515151615", "132", "22/2025", CardStatus.APROVADO, null, u2);
 		Card c2 = new Card(null, 1,"Marvdvdvsdla", 2, "514151325151615", "233", "22/2025", CardStatus.RECUSADO,null, u1);
